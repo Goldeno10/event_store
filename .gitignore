@@ -7,3 +7,7 @@ server.out
 *.out
 
 requirements_1.txt
+branch_structure.json
+temp_auto_push.bat
+temp_interactive_push.bat
+.gitignore

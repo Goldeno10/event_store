@@ -98,17 +98,9 @@ seeks/reads in binary mode — so multi-byte payloads round-trip correctly.
 Starting a fresh process against an existing `events.log` replays it and logs the
 rebuilt count:
 
-```
-2026-05-29 09:55:38,072 INFO Recovery complete: rebuilt index for 2 events from events.log (254 bytes)
-```
+![Recovery Log](./recovery_log.png)
 
-`GET /stats` immediately after confirms the same numbers:
 
-```json
-{"total": 2, "bytes": 254}
-```
-
-> Replace this block with a screenshot of your own terminal for submission.
 
 ---
 
@@ -145,6 +137,8 @@ rebuilt count:
 - Python docs — `io` and binary file objects: https://docs.python.org/3/library/io.html
 - Python docs — `os.fsync`: https://docs.python.org/3/library/os.html#os.fsync
 - "How does a database store data on disk" — various blog posts on WAL / LSM trees
+- Why append-only writes are much faster than random writes - https://pavan-kalyan.dev/posts/why-append-only-writes-are-much-faster-than-random-writes
+- Google AI Mode - https://share.google/aimode/aMdrLRlnoXzTYI0mf
 
 ## Why this made me a better backend developer
 
