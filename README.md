@@ -51,27 +51,11 @@ curl -s http://127.0.0.1:8000/stats
 
 ## Architecture
 
-```
-                   POST /events                         GET /events/:id
-                        │                                     │
-                        ▼                                     ▼
-              ┌───────────────────┐                 ┌───────────────────┐
-              │ stamp id+createdAt │                 │ index.get(id)     │
-              │ json + "\n"        │                 │  -> (offset, len) │
-              └─────────┬─────────┘                 └─────────┬─────────┘
-                        │ append (O_APPEND) + fsync           │ seek(offset)
-                        ▼                                     │ read(len)
-   events.log ──────────────────────────────────────────────┼────────────►
-   (append-only, one JSON object per line)                   │
-   line 0  {"id":"a",...}\n   offset=0   len=24              │ parse JSON
-   line 1  {"id":"b",...}\n   offset=25  len=31  ◄───────────┘ return
-   line 2  {"id":"c",...}\n   offset=57  len=40
+<!-- ![Event Architecture Diagram](./event_log_architecture.png) -->
 
-              ┌─────────────────────────────────────────┐
-              │ In-memory index  Map<id, {offset, len}>  │
-              │  a -> (0, 24)   b -> (25, 31)  ...        │  (rebuilt on startup
-              └─────────────────────────────────────────┘   by replaying the log)
-```
+<img src="./event_log_architecture.png" width="800">
+
+# I
 
 **Write path:** stamp `id` + `createdAt` → serialize to one UTF-8 JSON line →
 append to the file (`O_APPEND`) → `fsync` so it's durable → record
