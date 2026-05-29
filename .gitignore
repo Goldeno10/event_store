@@ -5,3 +5,5 @@ venv/
 events.log
 server.out
 *.out
+
+requirements_1.txt
